@@ -16,6 +16,8 @@ type KafkaConfig struct {
 	AuthCa          string
 	AuthCertificate string
 	AuthKey         string
+	Username        string
+	Password        string
 }
 
 // Creating error vars like this
@@ -27,6 +29,7 @@ var (
 	invalidTopic         = errors.New("no kafkaConfig.Topic given to be consumed, please set the KAFKA_TOPICS env")
 	invalidConsumerGroup = errors.New("no Kafka consumer kafkaConfig.Group defined, please set the KAFKA_GROUP env")
 	invalidAuthSsl       = errors.New("not enough SSL Auth config defined, please set KAFKA_AUTHENTICATION_CA, KAFKA_AUTHENTICATION_CERTIFICATE, KAFKA_AUTHENTICATION_KEY envs")
+	invalidAuthSaslSsl   = errors.New("not enough sasl_ssl Auth config defined, please set KAFKA_USERNAME, KAFKA_PASSWORD envs")
 )
 
 func GetKafka() (config KafkaConfig, err error) {
@@ -41,6 +44,8 @@ func GetKafka() (config KafkaConfig, err error) {
 		AuthCa:          os.Getenv("KAFKA_AUTHENTICATION_CA"),
 		AuthKey:         os.Getenv("KAFKA_AUTHENTICATION_KEY"),
 		AuthCertificate: os.Getenv("KAFKA_AUTHENTICATION_CERTIFICATE"),
+		Username:        os.Getenv("KAFKA_USERNAME"),
+		Password:        os.Getenv("KAFKA_PASSWORD"),
 	}
 
 	if len(kafkaConfig.Brokers) == 0 {
@@ -66,6 +71,16 @@ func GetKafka() (config KafkaConfig, err error) {
 
 		if len(kafkaConfig.AuthCertificate) == 0 {
 			return kafkaConfig, invalidAuthSsl
+		}
+	}
+
+	if kafkaConfig.AuthType == "sasl_ssl" {
+		if len(kafkaConfig.Username) == 0 {
+			return kafkaConfig, invalidAuthSaslSsl
+		}
+
+		if len(kafkaConfig.Password) == 0 {
+			return kafkaConfig, invalidAuthSaslSsl
 		}
 	}
 

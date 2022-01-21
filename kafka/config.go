@@ -2,9 +2,8 @@ package kafka
 
 import (
 	"crypto/tls"
-	"lmbr/merchant/config"
-
 	"github.com/Shopify/sarama"
+	"github.com/leroy-merlin-br/lmbr-kafka/config"
 	"github.com/pkg/errors"
 )
 

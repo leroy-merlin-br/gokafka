@@ -1,4 +1,4 @@
-module github.com/leroy-merlin-br/lmbr-sale-order--report
+module github.com/leroy-merlin-br/lmbr-kafka
 
 go 1.17
 
