@@ -1,11 +1,10 @@
-module github.com/leroy-merlin-br/lmbr-kafka
+module github.com/leroy-merlin-br/gokafka
 
 go 1.17
 
 require (
 	github.com/Shopify/sarama v1.31.0
-	github.com/joho/godotenv v1.4.0
-	github.com/linkedin/goavro v2.1.0+incompatible
+	github.com/linkedin/goavro v1.0.5
 	github.com/pkg/errors v0.9.1
 	github.com/riferrei/srclient v0.4.0
 	github.com/rs/zerolog v1.26.1
@@ -32,6 +31,5 @@ require (
 	golang.org/x/crypto v0.0.0-20211215165025-cf75a172585e // indirect
 	golang.org/x/net v0.0.0-20220105145211-5b0dc2dfae98 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
-	gopkg.in/linkedin/goavro.v1 v1.0.5 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )

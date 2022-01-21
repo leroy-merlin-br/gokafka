@@ -1,19 +1,17 @@
-package avro
+package gokafka
 
 import (
-	"lmbr/saleorder/config"
-
 	"github.com/linkedin/goavro"
 	"github.com/riferrei/srclient"
 )
 
 func Codec() (goavro.Codec, error) {
-	kafkaConfig, err := config.GetKafka()
+	kafkaConfig, err := GetKafka()
 	if err != nil {
 		return nil, err
 	}
 
-	avroConfig, err := config.GetAvro()
+	avroConfig, err := GetAvro()
 	if err != nil {
 		return nil, err
 	}
