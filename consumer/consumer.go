@@ -2,7 +2,6 @@ package consumer
 
 import (
 	"github.com/Shopify/sarama"
-	"log"
 )
 
 // Setup is run at the beginning of a new session, before ConsumeClaim
@@ -25,7 +24,6 @@ func (consumer *Consumer) ConsumeClaim(session sarama.ConsumerGroupSession, clai
 	// The `ConsumeClaim` itself is called within a goroutine, see:
 	// https://github.com/Shopify/sarama/blob/master/consumer_group.go#L27-L29
 	for message := range claim.Messages() {
-		log.Print(message)
 		err := consumer.Action(message)
 		if err != nil {
 			return err
