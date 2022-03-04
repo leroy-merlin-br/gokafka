@@ -3,9 +3,8 @@ package gokafka
 import (
 	"bytes"
 	"context"
-	"crypto/tls"
-	"crypto/x509"
 	"github.com/Shopify/sarama"
+	"github.com/leroy-merlin-br/gokafka/config"
 	"github.com/linkedin/goavro"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
@@ -17,98 +16,8 @@ import (
 	"syscall"
 )
 
-func NewConfig(kafkaConfig KafkaConfig) (*sarama.Config, error) {
-	saramaConfig := sarama.NewConfig()
-
-	err := authentication(saramaConfig, kafkaConfig)
-	if err != nil {
-		return saramaConfig, errors.Wrap(err, "Error parsing Kafka authentication: %v")
-	}
-
-	version, err := sarama.ParseKafkaVersion(kafkaConfig.Version)
-	if err != nil {
-		return saramaConfig, errors.Wrap(err, "Error parsing Kafka version: %v")
-	}
-
-	saramaConfig.Version = version
-
-	switch kafkaConfig.Assignor {
-	case "sticky":
-		saramaConfig.Consumer.Group.Rebalance.Strategy = sarama.BalanceStrategySticky
-	case "roundrobin":
-		saramaConfig.Consumer.Group.Rebalance.Strategy = sarama.BalanceStrategyRoundRobin
-	case "range":
-		saramaConfig.Consumer.Group.Rebalance.Strategy = sarama.BalanceStrategyRange
-	default:
-		err = errors.New("Unrecognized consumer group partition assignor: %s")
-	}
-
-	if kafkaConfig.OldestFirst {
-		saramaConfig.Consumer.Offsets.Initial = sarama.OffsetOldest
-	}
-
-	return saramaConfig, err
-}
-
-func authentication(saramaConfig *sarama.Config, kafkaConfig KafkaConfig) error {
-	if kafkaConfig.AuthType == "ssl" {
-		err := sslAuthentication(saramaConfig, kafkaConfig)
-		if err != nil {
-			return err
-		}
-
-		return nil
-	}
-
-	if kafkaConfig.AuthType == "sasl_ssl" {
-		saslSslAuthentication(saramaConfig, kafkaConfig)
-	}
-
-	return nil
-}
-
-func saslSslAuthentication(saramaConfig *sarama.Config, kafkaConfig KafkaConfig) {
-	saramaConfig.Net.SASL.User = kafkaConfig.Username
-	saramaConfig.Net.SASL.Password = kafkaConfig.Password
-	saramaConfig.Net.SASL.Handshake = true
-	saramaConfig.Net.SASL.Enable = true
-	saramaConfig.Net.SASL.Mechanism = sarama.SASLTypePlaintext
-
-	saramaConfig.Net.TLS.Enable = true
-	tlsConfig := &tls.Config{
-		InsecureSkipVerify: true,
-		ClientAuth:         0,
-	}
-	tlsConfig.InsecureSkipVerify = true
-
-	saramaConfig.Net.TLS.Config = tlsConfig
-}
-
-func sslAuthentication(saramaConfig *sarama.Config, kafkaConfig KafkaConfig) error {
-	tlsConfig, err := NewTLSConfig(
-		kafkaConfig.AuthCertificate,
-		kafkaConfig.AuthKey,
-		kafkaConfig.AuthCa)
-	if err != nil {
-		return err
-	}
-
-	// This can be used on test server if domain does not match cert:
-	tlsConfig.InsecureSkipVerify = true
-
-	saramaConfig.Net.TLS.Enable = true
-	saramaConfig.Net.TLS.Config = tlsConfig
-
-	return nil
-}
-
 func Handle(consumer Consumer) (err error) {
-	kafkaConfig, err := GetKafka()
-	if err != nil {
-		return err
-	}
-
-	saramaConfig, err := NewConfig(kafkaConfig)
+	config, err := config.Make()
 	if err != nil {
 		return err
 	}
@@ -116,7 +25,7 @@ func Handle(consumer Consumer) (err error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	client, err := sarama.NewConsumerGroup(strings.Split(kafkaConfig.Brokers, ","), kafkaConfig.ConsumerGroup, saramaConfig)
+	client, err := sarama.NewConsumerGroup(strings.Split(config.Brokers, ","), config.ConsumerGroup, config.Kafka)
 	defer func() {
 		err = client.Close()
 	}()
@@ -128,10 +37,10 @@ func Handle(consumer Consumer) (err error) {
 	defer wg.Wait()
 	wg.Add(1)
 
-	occurancesErr := consume(client, wg, kafkaConfig, consumer, ctx)
+	occurancesErr := consume(client, wg, *config, consumer, ctx)
 
 	<-consumer.Ready // Await till the consumer has been set up
-	log.Print("Sarama consumer up and running!...")
+	log.Print("Consumer up and running!...")
 
 	sigterm := make(chan os.Signal, 1)
 	signal.Notify(sigterm, syscall.SIGINT, syscall.SIGTERM)
@@ -150,7 +59,7 @@ func Handle(consumer Consumer) (err error) {
 	return err
 }
 
-func consume(client sarama.ConsumerGroup, wg *sync.WaitGroup, kafkaConfig KafkaConfig, consumer Consumer, ctx context.Context) <-chan error {
+func consume(client sarama.ConsumerGroup, wg *sync.WaitGroup, kafkaConfig config.Config, consumer Consumer, ctx context.Context) <-chan error {
 	errs := make(chan error, 1)
 	defer close(errs)
 
@@ -172,28 +81,6 @@ func consume(client sarama.ConsumerGroup, wg *sync.WaitGroup, kafkaConfig KafkaC
 	}()
 
 	return errs
-}
-
-// NewTLSConfig generates a TLS configuration used to authenticate on server with
-// certificates.
-// Parameters are the three pem files path we need to authenticate: client cert, client key and CA cert.
-func NewTLSConfig(cert string, key string, ca string) (*tls.Config, error) {
-	tlsConfig := tls.Config{}
-
-	// Load client cert
-	certificate, err := tls.X509KeyPair([]byte(cert), []byte(key))
-	if err != nil {
-		return &tlsConfig, err
-	}
-	tlsConfig.Certificates = []tls.Certificate{certificate}
-
-	// Load CA cert
-	caCertPool := x509.NewCertPool()
-	caCertPool.AppendCertsFromPEM([]byte(ca))
-	tlsConfig.RootCAs = caCertPool
-
-	tlsConfig.BuildNameToCertificate()
-	return &tlsConfig, err
 }
 
 type Action func(record *goavro.Record) error

@@ -1,17 +1,18 @@
 package gokafka
 
 import (
+	"github.com/leroy-merlin-br/gokafka/config"
 	"github.com/linkedin/goavro"
 	"github.com/riferrei/srclient"
 )
 
 func Codec() (goavro.Codec, error) {
-	kafkaConfig, err := GetKafka()
+	kafkaConfig, err := config.GetKafka()
 	if err != nil {
 		return nil, err
 	}
 
-	avroConfig, err := GetAvro()
+	avroConfig, err := config.GetAvro()
 	if err != nil {
 		return nil, err
 	}

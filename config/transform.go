@@ -1,15 +1,9 @@
-package gokafka
+package config
 
 import (
 	"errors"
 	"os"
 )
-
-type AvroConfig struct {
-	Url      string
-	Username string
-	Password string
-}
 
 // Creating error vars like this
 // We'll be able to use it to check what kind of error without
@@ -19,8 +13,8 @@ var (
 	invalidUrl = errors.New("no Avro url AvroConfig.Url defined, please set the AVRO_SCHEMA_URL env")
 )
 
-func GetAvro() (config AvroConfig, err error) {
-	avroConfig := AvroConfig{
+func GetAvro() (config EnvAvroConfig, err error) {
+	avroConfig := EnvAvroConfig{
 		Url:      os.Getenv("AVRO_SCHEMA_URL"),
 		Username: os.Getenv("AVRO_SCHEMA_USERNAME"),
 		Password: os.Getenv("AVRO_SCHEMA_PASSWORD"),
@@ -31,21 +25,6 @@ func GetAvro() (config AvroConfig, err error) {
 	}
 
 	return avroConfig, nil
-}
-
-type KafkaConfig struct {
-	Brokers         string
-	Version         string
-	ConsumerGroup   string
-	Topic           string
-	Assignor        string
-	OldestFirst     bool
-	AuthType        string
-	AuthCa          string
-	AuthCertificate string
-	AuthKey         string
-	Username        string
-	Password        string
 }
 
 // Creating error vars like this
@@ -60,8 +39,8 @@ var (
 	invalidAuthSaslSsl   = errors.New("not enough sasl_ssl Auth config defined, please set KAFKA_USERNAME, KAFKA_PASSWORD envs")
 )
 
-func GetKafka() (config KafkaConfig, err error) {
-	kafkaConfig := KafkaConfig{
+func GetKafka() (config EnvKafkaConfig, err error) {
+	kafkaConfig := EnvKafkaConfig{
 		Brokers:         os.Getenv("KAFKA_BROKERS"),
 		Version:         os.Getenv("KAFKA_VERSION"),
 		ConsumerGroup:   os.Getenv("KAFKA_GROUP"),
