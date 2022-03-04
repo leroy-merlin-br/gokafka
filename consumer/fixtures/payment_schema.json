@@ -1,0 +1,33 @@
+{
+  "type" : "record",
+  "name" : "boitaticssale_payment",
+  "fields" : [ {
+    "name" : "brand",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "installment",
+    "type" : [ "long", "null" ],
+    "default" : null
+  }, {
+    "name" : "installmentValue",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "lastDigitsCardNumber",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "number",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "type",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "value",
+    "type" : [ "string", "null" ],
+    "default" : null
+  } ]
+}

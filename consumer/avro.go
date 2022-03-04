@@ -1,4 +1,4 @@
-package gokafka
+package consumer
 
 import (
 	"github.com/leroy-merlin-br/gokafka/config"

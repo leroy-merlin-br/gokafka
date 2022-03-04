@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/Shopify/sarama v1.31.0
+	github.com/golang/mock v1.6.0
 	github.com/linkedin/goavro v1.0.5
 	github.com/pkg/errors v0.9.1
 	github.com/riferrei/srclient v0.4.0

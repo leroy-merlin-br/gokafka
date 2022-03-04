@@ -1,0 +1,316 @@
+{
+  "type" : "record",
+  "name" : "boitaticssale_order_status",
+  "fields" : [ {
+    "name" : "actionName",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "billingCity",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "billingState",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "carrierName",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "carrierService",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "createdAt",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "createdTimestamp",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "dateDelivery",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "dateWaitingDelivery",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "deliveryDate",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "documentId",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "elasticService",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "hybrisId",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "hybrisLastStatus",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "index",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "integrationDateList",
+    "type" : {
+      "type" : "array",
+      "items" : {
+        "type" : "record",
+        "name" : "integrationDateList_record",
+        "fields" : [ {
+          "name" : "date",
+          "type" : [ "string", "null" ],
+          "default" : null
+        }, {
+          "name" : "status",
+          "type" : [ "string", "null" ],
+          "default" : null
+        } ]
+      }
+    },
+    "default" : [ ]
+  }, {
+    "name" : "integrationStatusList",
+    "type" : {
+      "type" : "array",
+      "items" : {
+        "type" : "record",
+        "name" : "integrationStatusList_record",
+        "fields" : [ {
+          "name" : "date",
+          "type" : [ "string", "null" ],
+          "default" : null
+        }, {
+          "name" : "status",
+          "type" : [ "string", "null" ],
+          "default" : null
+        } ]
+      }
+    },
+    "default" : [ ]
+  }, {
+    "name" : "isAssistedSale",
+    "type" : [ "boolean", "null" ],
+    "default" : null
+  }, {
+    "name" : "isOnAppContext",
+    "type" : [ "boolean", "null" ],
+    "default" : null
+  }, {
+    "name" : "isOnMobileApp",
+    "type" : [ "boolean", "null" ],
+    "default" : null
+  }, {
+    "name" : "issuerPlant",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "jsonBackofficeLog",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "jsonCartItems",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "lastUpdateStatusDate",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "orderShippingTypes",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "orderType",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "paymentData",
+    "type" : {
+      "type" : "array",
+      "items" : {
+        "type" : "record",
+        "name" : "paymentData_record",
+        "fields" : [ {
+          "name" : "brand",
+          "type" : [ "string", "null" ],
+          "default" : null
+        }, {
+          "name" : "installment",
+          "type" : [ "long", "null" ],
+          "default" : null
+        }, {
+          "name" : "installmentValue",
+          "type" : [ "string", "null" ],
+          "default" : null
+        }, {
+          "name" : "lastDigitsCardNumber",
+          "type" : [ "string", "null" ],
+          "default" : null
+        }, {
+          "name" : "number",
+          "type" : [ "string", "null" ],
+          "default" : null
+        }, {
+          "name" : "type",
+          "type" : [ "string", "null" ],
+          "default" : null
+        }, {
+          "name" : "value",
+          "type" : [ "string", "null" ],
+          "default" : null
+        } ]
+      }
+    },
+    "default" : [ ]
+  }, {
+    "name" : "paymentType",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "productQuantity",
+    "type" : [ "long", "null" ],
+    "default" : null
+  }, {
+    "name" : "productUniqueQuantity",
+    "type" : [ "long", "null" ],
+    "default" : null
+  }, {
+    "name" : "receiverPlant",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "referer",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "requestId",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "requestPath",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "saleOrderStatus",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "sendToPubSub",
+    "type" : [ "boolean", "null" ],
+    "default" : null
+  }, {
+    "name" : "sentToHybris",
+    "type" : [ "boolean", "null" ],
+    "default" : null
+  }, {
+    "name" : "sessionId",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "shippingCost",
+    "type" : [ "float", "null" ],
+    "default" : null
+  }, {
+    "name" : "shippingFormattedCost",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "shippingModality",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "sqsQueue",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "statusLogDateList",
+    "type" : {
+      "type" : "array",
+      "items" : {
+        "type" : "record",
+        "name" : "statusLogDateList_record",
+        "fields" : [ {
+          "name" : "date",
+          "type" : [ "string", "null" ],
+          "default" : null
+        }, {
+          "name" : "status",
+          "type" : [ "string", "null" ],
+          "default" : null
+        } ]
+      }
+    },
+    "default" : [ ]
+  }, {
+    "name" : "statusLogList",
+    "type" : {
+      "type" : "array",
+      "items" : {
+        "type" : "record",
+        "name" : "statusLogList_record",
+        "fields" : [ {
+          "name" : "date",
+          "type" : [ "string", "null" ],
+          "default" : null
+        }, {
+          "name" : "status",
+          "type" : [ "string", "null" ],
+          "default" : null
+        } ]
+      }
+    },
+    "default" : [ ]
+  }, {
+    "name" : "storagePlant",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "storeId",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "totalValue",
+    "type" : [ "float", "null" ],
+    "default" : null
+  }, {
+    "name" : "updatedAt",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "userContext",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "userEmail",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "userFiscalId",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "userId",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "userIp",
+    "type" : [ "string", "null" ],
+    "default" : null
+  }, {
+    "name" : "userPhone",
+    "type" : [ "string", "null" ],
+    "default" : null
+  } ]
+}
