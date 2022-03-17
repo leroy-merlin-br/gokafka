@@ -63,12 +63,7 @@ func ConfigureSarama(kafkaConfig EnvKafkaConfig, saramaConfig *sarama.Config) er
 
 func authentication(saramaConfig *sarama.Config, kafkaConfig EnvKafkaConfig) error {
 	if kafkaConfig.AuthType == "ssl" {
-		err := sslAuthentication(saramaConfig, kafkaConfig)
-		if err != nil {
-			return err
-		}
-
-		return nil
+		return sslAuthentication(saramaConfig, kafkaConfig)
 	}
 
 	if kafkaConfig.AuthType == "sasl_ssl" {
