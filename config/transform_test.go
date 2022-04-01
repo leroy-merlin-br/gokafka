@@ -1,4 +1,4 @@
-package gokafka
+package config
 
 import (
 	"os"
