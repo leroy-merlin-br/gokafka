@@ -12,6 +12,7 @@ type Consumer struct {
 func (consumer *Consumer) IsReady() chan bool {
 	return consumer.Ready
 }
+
 func (consumer *Consumer) SetReady(ready chan bool) {
 	consumer.Ready = ready
 }

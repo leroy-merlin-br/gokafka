@@ -18,6 +18,10 @@ func (consumer *AvroConsumer) IsReady() chan bool {
 	return consumer.Ready
 }
 
+func (consumer *AvroConsumer) SetReady(ready chan bool) {
+	consumer.Ready = ready
+}
+
 func (consumer *AvroConsumer) getAction() AvroAction {
 	return consumer.Action
 }
