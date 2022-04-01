@@ -4,6 +4,22 @@ import (
 	"github.com/Shopify/sarama"
 )
 
+type Consumer struct {
+	Ready  chan bool
+	Action Action
+}
+
+func (consumer *Consumer) IsReady() chan bool {
+	return consumer.Ready
+}
+func (consumer *Consumer) SetReady(ready chan bool) {
+	consumer.Ready = ready
+}
+
+func (consumer *Consumer) getAction() Action {
+	return consumer.Action
+}
+
 // Setup is run at the beginning of a new session, before ConsumeClaim
 func (consumer *Consumer) Setup(sarama.ConsumerGroupSession) error {
 	// Mark the consumer as ready
