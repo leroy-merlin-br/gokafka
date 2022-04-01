@@ -14,7 +14,7 @@ import (
 	"syscall"
 )
 
-func Handle(consumer consumer.Consumer) (err error) {
+func Handle(consumer consumer.ConsumerInterface) (err error) {
 	consumerConfig, err := config.Make()
 	if err != nil {
 		return err
@@ -37,7 +37,7 @@ func Handle(consumer consumer.Consumer) (err error) {
 
 	occurancesErr := consume(client, wg, *consumerConfig, consumer, ctx)
 
-	<-consumer.Ready // Await till the consumer has been set up
+	<-consumer.IsReady() // Await till the consumer has been set up
 	log.Print("Consumer up and running!...")
 
 	sigterm := make(chan os.Signal, 1)
@@ -57,7 +57,7 @@ func Handle(consumer consumer.Consumer) (err error) {
 	return err
 }
 
-func consume(client sarama.ConsumerGroup, wg *sync.WaitGroup, consumerConfig config.Config, consumer consumer.Consumer, ctx context.Context) <-chan error {
+func consume(client sarama.ConsumerGroup, wg *sync.WaitGroup, consumerConfig config.Config, consumer consumer.ConsumerInterface, ctx context.Context) <-chan error {
 	errs := make(chan error, 1)
 	defer close(errs)
 
@@ -67,14 +67,14 @@ func consume(client sarama.ConsumerGroup, wg *sync.WaitGroup, consumerConfig con
 			// `Consume` should be called inside an infinite loop, when a
 			// server-side rebalance happens, the consumer session will need to be
 			// recreated to get the new claims
-			if err := client.Consume(ctx, strings.Split(consumerConfig.Topic, ","), &consumer); err != nil {
+			if err := client.Consume(ctx, strings.Split(consumerConfig.Topic, ","), consumer); err != nil {
 				errs <- errors.Wrap(err, "Error creating consumer group client: %v")
 			}
 			// check if context was cancelled, signaling that the consumer should stop
 			if ctx.Err() != nil {
 				return
 			}
-			consumer.Ready = make(chan bool)
+			consumer.SetReady(make(chan bool))
 		}
 	}()
 

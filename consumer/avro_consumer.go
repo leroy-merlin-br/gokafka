@@ -8,6 +8,20 @@ import (
 	"reflect"
 )
 
+type AvroConsumer struct {
+	Ready  chan bool
+	Action AvroAction
+	Codec  goavro.Codec
+}
+
+func (consumer *AvroConsumer) IsReady() chan bool {
+	return consumer.Ready
+}
+
+func (consumer *AvroConsumer) getAction() AvroAction {
+	return consumer.Action
+}
+
 // Setup is run at the beginning of a new session, before ConsumeClaim
 func (consumer *AvroConsumer) Setup(sarama.ConsumerGroupSession) error {
 	// Mark the consumer as ready
